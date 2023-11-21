@@ -16,7 +16,7 @@ def jugada_humano():
             if coloca_ficha(pos_humano, ficha_humano):
                 siguiente = True
         else:
-            print("Ingrese un número del 1 al 9.")
+            print("Ingrese un número del 1 al 9:")
     return
 
 def coloca_ficha(_pos, _ficha):    

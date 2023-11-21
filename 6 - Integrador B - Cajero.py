@@ -20,7 +20,7 @@ def login(_usuario):
 
 
 # *************** Bloque principal *****************
-cuentas = {"Mario": "Paasswwoorrddss", "Raquel": "Otra_clave", "Camila": "Ad1v1n4"}
+cuentas = {"Mario": "Paasswwoorrddsss", "Raquel": "Otra_clave", "Camila": "Ad1v1n4"}
 cuenta_elegida = menu_principal()
 print(cuentas["Camila"])
 print(f"Cuenta seleccionada: {cuenta_elegida}")

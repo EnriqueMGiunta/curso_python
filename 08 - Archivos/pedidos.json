@@ -1,0 +1,28 @@
+{
+    "pedidos": [
+        {
+            "id": 1,
+            "nombre": "Juan",
+            "productos": [
+                "Mouse",
+                "Teclado"
+            ]
+        },
+        {
+            "id": 2,
+            "nombre": "Ana",
+            "productos": [
+                "Monitor",
+                "Parlantes"
+            ]
+        },
+        {
+            "id": 3,
+            "nombre": "Carlos",
+            "productos": [
+                "Mouse",
+                "Parlantes"
+            ]
+        }
+    ]
+}

@@ -8,12 +8,8 @@
 def menu_principal():
     seleccion = 0
     while seleccion <= 0 or seleccion > len(cuentas):
-        print(f"""
-{margen}┌────────────────────────────┐
-{margen}│  CAJERO AUTOMÁTICO VIRTUAL │
-{margen}└────────────────────────────┘
-
-{margen}  Cuentas disponibles:\n""")
+        titulo()
+        print(f"{margen}  Cuentas disponibles:\n")
         for y in range(len(cuentas)):
             print(f"{margen}  {y + 1} - {cuentas[y][0]}")
         print(f"\n{margen}  9 - Salir.")
@@ -22,7 +18,15 @@ def menu_principal():
             print(f"{margen}Cuenta seleccionada: {cuentas[seleccion - 1][0]}\n")
     return seleccion - 1
 
+def titulo():
+    
+    print(f"{margen}┌────────────────────────────┐")
+    print(f"{margen}│  CAJERO AUTOMÁTICO VIRTUAL │")
+    print(f"{margen}└────────────────────────────┘")
+    return
+
 def titulo_cuenta(_cuenta):
+    titulo()
     print(f"{margen}┌────────────────────────────┐")
     print(f"{margen}│   CUENTA: \"{cuentas[_cuenta][0]}\"")
     print(f"{margen}└────────────────────────────┘\n")
@@ -80,6 +84,7 @@ def menu_cuenta(_cuenta):
     return
 
 # *************** Bloque principal *****************
+from os import system
 cuentas = [
         ["Mario", "Paasswwoorrddsss", 300000],
         ["Raquel", "Otra_clave", 320000],
@@ -88,6 +93,15 @@ cuentas = [
         ]
 salir = False
 margen = "          "
+
+test = cuentas[0][1]
+tb = ""
+for c in test:
+    print(c)
+    tb = tb + (c or 127)
+print(test,tb)
+print(test, end="\r")
+
 cuenta_elegida = menu_principal()
 while cuenta_elegida != 8:
     if login(cuenta_elegida):

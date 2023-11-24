@@ -19,7 +19,7 @@ def menu_principal():
     return seleccion - 1
 
 def titulo():
-    
+    cls()
     print(f"{margen}┌────────────────────────────┐")
     print(f"{margen}│  CAJERO AUTOMÁTICO VIRTUAL │")
     print(f"{margen}└────────────────────────────┘")
@@ -53,18 +53,19 @@ def consultar_saldo(_cuenta):
 def ingresar_dinero(_cuenta):
     titulo_cuenta(_cuenta)
     monto = -1
-    type(monto)
     while monto < 0 or type(monto) != int:
-        monto = int(input(f"\n{margen}   Cantidad de pesos argentinos (AR$) a ingresar? (0 para salir): "))
+        monto = int(input(f"\n{margen}   Cantidad de pesos argentinos (AR$) a ingresar? (0 para salir):\n"))
         if monto == 0:
             return False
         elif monto < 0:
             print(f"{margen}   El monto no puede ser negativo.")
-        elif type(monto) != "int":
+        elif type(monto) != int:
             print(f"{margen}   El monto debe ser un número.")
-    cuentas[_cuenta][2] += monto
-    print(f"\n{margen}   Se ingresó la suma de ${monto} a la cuenta \"{cuentas[_cuenta][0]}\".")
-    print(f"\n{margen}   El nuevo saldo es de ${cuentas[_cuenta][2]}.")
+        else:
+            cuentas[_cuenta][2] += monto
+            print(f"\n{margen}   Se ingresó la suma de ${monto} a la cuenta \"{cuentas[_cuenta][0]}\".")
+            print(f"\n{margen}   El nuevo saldo es de ${cuentas[_cuenta][2]}.")
+            input("Enter para continuar.")
     return True
 
 def menu_cuenta(_cuenta):
@@ -74,7 +75,7 @@ def menu_cuenta(_cuenta):
         print(f"{margen}   1 - Consultar saldo.")
         print(f"{margen}   2 - Ingresar dinero.")
         print(f"{margen}   3 - Retirar dinero.")
-        print(f"{margen}   4 - Transferir dinero.")
+        print(f"{margen}   4 - Transferir dinero.\n")
         print(f"{margen}   9 - Salir.")
         operacion = int(input(f"\n{margen}Elija una opción."))
         if operacion == 1:
@@ -83,8 +84,17 @@ def menu_cuenta(_cuenta):
             cuentas[_cuenta][2] += ingresar_dinero(_cuenta)
     return
 
+def cls():
+    if os.name == "posix":
+        os.system("clear")
+    elif os.name == "ce" or os.name == "nt" or os.name == "dos":
+        os.system("cls")
+    return
+
+
+
 # *************** Bloque principal *****************
-from os import system
+import os
 cuentas = [
         ["Mario", "Paasswwoorrddsss", 300000],
         ["Raquel", "Otra_clave", 320000],

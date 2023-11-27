@@ -57,7 +57,7 @@ def opcion(_texto, _ini, _fin, _salida):
             return _salida
         if entrada[0] == "-":
             signo = -1
-            entrada.remove("-")
+            entrada[0] = 0
         for char in entrada:
             if char not in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                 entero = "error"
@@ -75,9 +75,9 @@ def login(_cuenta):
     intentos = 3
     titulo_cuenta(_cuenta)
     while intentos >= 0:
-        pw = input(f"\n{margen}   Ingrese su contraseña de acceso: ")    
+        pw = input(f"\n{margen}Ingrese su contraseña de acceso: ")    
         if pw != cuentas[_cuenta][1]:
-            print(f"\n{margen}   Contraseña incorrecta, le quedan {intentos} intentos.")
+            print(f"\n{margen}Contraseña incorrecta, le quedan {intentos} intentos.")
             intentos -= 1
         else:
             return True
@@ -93,7 +93,7 @@ def ingresar_dinero(_cuenta):
     titulo_cuenta(_cuenta)
     monto = -1
     while monto < 0 or type(monto) != int:
-        monto = opcion(f"\n{margen}Cantidad de pesos argentinos (AR$) a ingresar? (0 para salir):\n{margen}   ", -999999999999999999, 999999999999999999, 0)
+        monto = opcion(f"\n{margen}Cantidad de pesos argentinos (AR$) a ingresar? (0 para salir):\n{margen}", -999999999999999999, 999999999999999999, 0)
         if monto == 0:
             return False
         elif monto < 0:
@@ -101,6 +101,18 @@ def ingresar_dinero(_cuenta):
         elif type(monto) != int:
             print(f"{margen}El monto debe ser un número.")
     return monto
+
+def retirar_dinero(_cuenta, _monto):
+    while monto < 0 or type(monto) != int:
+        monto = opcion(f"\n{margen}Cantidad de pesos argentinos (AR$) a retirar? (0 para salir):\n{margen}", -999999999999999999, 999999999999999999, 0)
+        if monto == 0:
+            return False
+        elif monto < 0:
+            print(f"{margen}El monto no puede ser negativo.")
+        elif type(monto) != int:
+            print(f"{margen}El monto debe ser un número.")
+    return monto
+                    
 
 def menu_cuenta(_cuenta):
     operacion = 0
@@ -111,7 +123,7 @@ def menu_cuenta(_cuenta):
         print(f"{margen}   3 - Retirar dinero.")
         print(f"{margen}   4 - Transferir dinero.\n")
         print(f"{margen}   9 - Salir.")
-        operacion = int(input(f"\n{margen}Elija una opción."))
+        operacion = opcion(f"\n{margen}Elija una opción.", 1, 4, 9)
         if operacion == 1:
             consultar_saldo(_cuenta)
         elif operacion == 2:

@@ -102,7 +102,8 @@ def ingresar_dinero(_cuenta):
             print(f"{margen}El monto debe ser un número.")
     return monto
 
-def retirar_dinero(_cuenta, _monto):
+def retirar_dinero(_cuenta):
+    monto = -1
     while monto < 0 or type(monto) != int:
         monto = opcion(f"\n{margen}Cantidad de pesos argentinos (AR$) a retirar? (0 para salir):\n{margen}", -999999999999999999, 999999999999999999, 0)
         if monto == 0:
@@ -134,14 +135,15 @@ def menu_cuenta(_cuenta):
             input(f"{margen}Enter para continuar.")
         elif operacion == 3:
             retiro = retirar_dinero(_cuenta)
-            if retiro > cuentas[_cuenta][2]:
+            while retiro > cuentas[_cuenta][2]:
                 print(f"{margen}No se puede retirar más dinero del disponible en su cuenta.")
                 print(f"{margen}Máximo: ${cuentas[_cuenta][2]}")
+                retiro = retirar_dinero(_cuenta)
             else:
                 cuentas[_cuenta][2] -= retiro
                 print(f"\n{margen}Se retiró la suma de ${retiro} a la cuenta \"{cuentas[_cuenta][0]}\".")
                 print(f"\n{margen}El nuevo saldo es de ${cuentas[_cuenta][2]}.")
-                input("{margen}Enter para continuar.")
+            input(f"{margen}Enter para continuar.")
     return
 
 def cls():

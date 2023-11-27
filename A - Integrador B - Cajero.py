@@ -92,28 +92,31 @@ def consultar_saldo(_cuenta):
 def ingresar_dinero(_cuenta):
     titulo_cuenta(_cuenta)
     monto = -1
-    while monto < 0 or type(monto) != int:
-        monto = opcion(f"\n{margen}Cantidad de pesos argentinos (AR$) a ingresar? (0 para salir):\n{margen}", -999999999999999999, 999999999999999999, 0)
+    while monto < 0 or type(monto) != int or monto%100 != 0:
+        monto = opcion(f"\n{margen} Indique la cantidad de pesos argentinos (AR$) a ingresar, en múltiplos de 100. (0 para salir):\n{margen}", -999999999999999999, 999999999999999999, 0)
         if monto == 0:
             return False
         elif monto < 0:
             print(f"{margen}El monto no puede ser negativo.")
+        elif monto%100 != 0:
+            print(f"{margen}El monto debe ser múltiplo de 100.")
         elif type(monto) != int:
             print(f"{margen}El monto debe ser un número.")
     return monto
 
 def retirar_dinero(_cuenta):
     monto = -1
-    while monto < 0 or type(monto) != int:
-        monto = opcion(f"\n{margen}Cantidad de pesos argentinos (AR$) a retirar? (0 para salir):\n{margen}", -999999999999999999, 999999999999999999, 0)
+    while monto < 0 or type(monto) != int or monto%100 != 0:
+        monto = opcion(f"\n{margen} Indique la suma de pesos argentinos (AR$) a retirar, en múltiplos de 100. (0 para salir):\n{margen}", -999999999999999999, 999999999999999999, 0)
         if monto == 0:
             return False
         elif monto < 0:
             print(f"{margen}El monto no puede ser negativo.")
+        elif monto%100 != 0:
+            print(f"{margen}El monto debe ser múltiplo de 100.")
         elif type(monto) != int:
             print(f"{margen}El monto debe ser un número.")
     return monto
-                    
 
 def menu_cuenta(_cuenta):
     operacion = 0
@@ -130,6 +133,8 @@ def menu_cuenta(_cuenta):
         elif operacion == 2:
             ingreso = ingresar_dinero(_cuenta)
             cuentas[_cuenta][2] += ingreso
+            print(f"\n{margen}{rojo}Por favor coloque los billetes.{gris}")
+            input(f"{margen}Enter para continuar.")
             print(f"\n{margen}Se ingresó la suma de ${ingreso} a la cuenta \"{cuentas[_cuenta][0]}\".")
             print(f"\n{margen}El nuevo saldo es de ${cuentas[_cuenta][2]}.")
             input(f"{margen}Enter para continuar.")
@@ -141,8 +146,9 @@ def menu_cuenta(_cuenta):
                 retiro = retirar_dinero(_cuenta)
             else:
                 cuentas[_cuenta][2] -= retiro
-                print(f"\n{margen}Se retiró la suma de ${retiro} a la cuenta \"{cuentas[_cuenta][0]}\".")
+                print(f"\n{margen}Se extrajo la suma de ${retiro} de la cuenta \"{cuentas[_cuenta][0]}\".")
                 print(f"\n{margen}El nuevo saldo es de ${cuentas[_cuenta][2]}.")
+                print(f"\n{margen}{rojo}Por favor retire los billetes.{gris}")
             input(f"{margen}Enter para continuar.")
     return
 
@@ -165,7 +171,14 @@ cuentas = [
         ]
 salir = False
 margen = "          "
-
+# Diccionario de colores
+gris = "\033[97m"
+verde = "\033[92m"
+rojo = "\033[91m"
+amarillo = "\033[93m"
+azul = "\033[94m"
+rosa = "\033[95m"
+oscuro = "\033[90m"
 test = cuentas[0][1]
 tb = ""
 for c in test:

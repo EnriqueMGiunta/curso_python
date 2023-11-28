@@ -105,7 +105,7 @@ def consultar_saldo(_cuenta):
     # Consulta de saldo de la cuenta.
     titulo_cuenta(_cuenta)
     print(f"{margen} El saldo de la cuenta es de ${cuentas[_cuenta][2]}.")
-    input(f"{margen} Pulse enter para volver al menú.")
+    input(f"{margen} Pulse enter para volver al menú anterior.")
     return
 
 def ingresar_dinero(_cuenta):

@@ -1,7 +1,9 @@
-# Cajero automático Virtual. Ver 1.0
-# <enriquemgiunta@gmail.com>
+"""
+Cajero automático Virtual. Ver 2.0
+<enriquemgiunta@gmail.com>
+"""
 def cls():
-    # Limpia pantalla
+    """ Limpia pantalla. """
     if os.name == "posix":
         os.system("clear")
     elif os.name == "ce" or os.name == "nt" or os.name == "dos":
@@ -9,7 +11,7 @@ def cls():
     return
 
 def titulo():
-    # Muestra la cabecera del cajero.
+    """ Muestra la cabecera del cajero. """
     cls()
     print(f"{margen}┌────────────────────────────┐")
     print(f"{margen}│  CAJERO AUTOMÁTICO VIRTUAL │")
@@ -17,45 +19,45 @@ def titulo():
     return
 
 def titulo_cuenta(_cuenta):
-    # Muestra el título de la cuenta.
+    """ Muestra el título de la cuenta. """
     titulo()
     print(f"{margen}┌────────────────────────────┐")
     print(f"{margen}│   Bienvenido/a \"{cuentas[_cuenta][0]}\"", end="")
     print(" " * (9 - len(cuentas[_cuenta][0])), "│")
-    print(f"{margen}└────────────────────────────┘\n")
+    print(f"{margen}└────────────────────────────┘\n\n")
     return
 
 def menu_principal():
-    # Muestra el menú principal con las opciones disponibles.
+    """ Muestra el menú principal con las opciones disponibles. """
     seleccion = -1
     while type(seleccion) != int or seleccion < 0 or seleccion > len(cuentas) - 1:
         titulo()
         print(f"{margen}  Cuentas disponibles:\n")
         for y in range(len(cuentas)):
             print(f"{margen}  {y} - {cuentas[y][0]}")
-        print(f"\n{margen}  99 - Salir.")
-        seleccion = opcion(f"\n{margen}  Elija con qué cuenta trabajar (0 - {y}): ", 0, len(cuentas) - 1, 99)
+        print(f"\n{margen}  99 - Salir.\n\n")
+        seleccion = opcion(f"{margen} Elija con qué cuenta trabajar (0 - {y}): ", 0, len(cuentas) - 1, 99)
         if seleccion == 99:
             return 99
     return seleccion
 
 def menu_cuenta(_cuenta):
-    # Muestra el menú de la cuenta.
+    """ Muestra el menú de la cuenta. """
     operacion = 0
     titulo_cuenta(_cuenta)
     print(f"{margen}   1 - Consultar saldo.")
     print(f"{margen}   2 - Ingresar dinero.")
     print(f"{margen}   3 - Retirar dinero.")
     print(f"{margen}   4 - Transferir dinero.\n")
-    print(f"{margen}   ENTER ó 9 - Salir.")
-    operacion = opcion(f"\n{margen} Elija una opción.", 1, 4, 9)
+    print(f"{margen}   9 o Enter - Salir.\n\n")
+    operacion = opcion(f"{margen} Elija una opción.", 1, 4, "9")
     return operacion
 
 def opcion(_texto, _ini, _fin, _salida):
     """
     Pide ingresar un valor mostrando el texto: _texto
     Chequea que lo ingresado esté entre _ini y _fin.
-    Si lo ingresado es igual a _salida o está entre :ini y _fin, retorna con ese valor.
+    Si lo ingresado es igual a _salida o está entre _ini y _fin, retorna con ese valor.
 
     Args:
         _texto (_str_): Texto a mostrar para ingreso de un valor.
@@ -66,31 +68,35 @@ def opcion(_texto, _ini, _fin, _salida):
     Retorna:
         Valor ingresado válido.
     """
-    entero = "no_verificado"
-    signo = 1
     # Determina si el valor ingresado puede hacerse entero.
-    while entero in ["no_verificado", "error"] or salida == "error":
-        entrada = input(f"{margen}{_texto} ")
-        if entrada == "":
-            return _salida
-        if entrada[0] == "-":
-            signo = -1
-            entrada[0] = "0"
-        for char in entrada:
-            if char not in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
-                entero = "error"
+    CURSOR_ARRIBA = '\x1b[1A'
+    BORRA_LINEA = '\x1b[2K'
+    _entero = "no_verificado"
+    _retornar = "error"
+    while _retornar == "error":
+        while _entero == "no_convertible" or _entero == "no_verificado":
+            _entrada = input(f"{CURSOR_ARRIBA}{BORRA_LINEA}{_texto} ")
+            if _entrada == "":
                 return _salida
-        entero = signo * int(entrada)
+            # Determina si el valor ingresado se puede convertir a entero sin tirar error.
+            _entero = 0
+            index = 0
+            for char in _entrada:
+                if (char == "-" and index != 0) or char not in ["-", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
+                    _entero = "no_convertible"
+                    break
+                index += 1
+        _entero = int(_entrada)
         # Determina si el entero está dentro de las opciones.
-        if entero != _salida and entero not in range(_ini, _fin + 1):
-            print(f"{margen} El valor ingresado no está entre las opciones.")
-            salida = "error"
+        if _entero != _salida and _entero not in range(_ini, _fin + 1):
+            _retornar = "error"
+            _entero = "no_verificado"
         else:
-            salida = entero
-    return salida
+            _retornar = _entero
+    return _retornar
 
 def login(_cuenta):
-    # Pide la contraseña de acceso a la cuenta.
+    """ Pide la contraseña de acceso a la cuenta. """
     intentos = 3
     while intentos > 0:
         titulo_cuenta(_cuenta)
@@ -102,18 +108,18 @@ def login(_cuenta):
     return False
 
 def consultar_saldo(_cuenta):
-    # Consulta de saldo de la cuenta.
+    """ Consulta de saldo de la cuenta. """
     titulo_cuenta(_cuenta)
     print(f"{margen} El saldo de la cuenta es de ${cuentas[_cuenta][2]}.")
     input(f"{margen} Pulse enter para volver al menú anterior.")
     return
 
 def ingresar_dinero(_cuenta):
-    # solicita los datos para ingresar dinero en la cuenta.
+    """ solicita los datos para ingresar dinero en la cuenta. """
     titulo_cuenta(_cuenta)
     monto = -1
     while monto < 0 or type(monto) != int or monto%100 != 0:
-        monto = opcion(f"\n{margen} Indique la cantidad de pesos argentinos (AR$) a ingresar, en múltiplos de 100. (0 para salir):\n{margen}", -999999999999999999, 999999999999999999, 0)
+        monto = opcion(f"{margen} Indique la cantidad de pesos argentinos (AR$) a ingresar, en múltiplos de 100. Máximo $50.000 (0 para salir):\n{margen}", 100, 50000, 0)
         if monto < 0:
             print(f"{margen} El monto no puede ser negativo.")
         elif monto%100 != 0:
@@ -123,10 +129,10 @@ def ingresar_dinero(_cuenta):
     return monto
 
 def retirar_dinero(_cuenta):
-    # Solicita los datos para el retiro de dinero de la cuenta.
+    """ Solicita los datos para el retiro de dinero de la cuenta. """
     monto = -1
     while monto < 0 or type(monto) != int or monto%100 != 0:
-        monto = opcion(f"\n{margen} Indique la suma de pesos argentinos (AR$) a retirar, en múltiplos de 100. (0 para salir):\n{margen}", -999999999999999999, 999999999999999999, 0)
+        monto = opcion(f"{margen} Indique la suma de pesos argentinos (AR$) a retirar, en múltiplos de 100. Máximo $50.000 (0 para salir):\n{margen}", 0, 50000, 0)
         if monto == 0:
             return False
         elif monto < 0:
@@ -138,10 +144,10 @@ def retirar_dinero(_cuenta):
     return monto
 
 def transferir_dinero():
-    # Solicita los datos para transferir dinero a otra cuenta.
+    """Solicita los datos para transferir dinero a otra cuenta. """
     _monto  = 0
     _destino = 99
-    _monto = opcion(f"\n{margen} Indique monto (en AR$) a transferir. (0 para salir):\n{margen}", -999999999999999999, 999999999999999999, 0)
+    _monto = opcion(f"{margen} Indique monto a transferir, dispone de ${cuentas[cuenta_elegida][2]}. (0 para salir): ", 1, cuentas[cuenta_elegida][2], 0)
     if _monto <= 0:
         return (0, 99)
     titulo()

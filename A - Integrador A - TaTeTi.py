@@ -55,7 +55,7 @@ def analizar(_trio):
             if elemento != ficha_maquina and elemento != ficha_humano:
                 if elemento not in prioridad_3:
                     prioridad_3.append(elemento)
-    print(f"Trio analizado: {_trio}     Prioridad 1 = {prioridad_1}     Prioridad 2 = {prioridad_2}     Prioridad 3 = {prioridad_3}")
+    #print(f"Trio analizado: {_trio}     Prioridad 1 = {prioridad_1}     Prioridad 2 = {prioridad_2}     Prioridad 3 = {prioridad_3}")
     return
 
 def jugada_humano():

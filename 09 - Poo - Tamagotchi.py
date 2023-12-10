@@ -1,3 +1,7 @@
+"""
+Tamagotchi
+<enriquemgiunta@gmail.com>
+"""
 class Tamagotchi():
     def __init__(self, nombre, n_energia, n_hambre, n_felicidad, humor, vivo):
         self.nombre = nombre
@@ -5,7 +9,7 @@ class Tamagotchi():
         self.n_hambre = 0
         self.n_felicidad = 50
         self.humor
-        self. vivo = True
+        self.vivo = True
     # METODOS        
     def mostrar_estado(self):
         # Muestra en consola el nombre del Tamagotchi y sus niveles actuales de energía, hambre y estado de humor.
@@ -33,4 +37,5 @@ class Tamagotchi():
         # Si el nivel de hambre llega a 20, cada vez que se realice una acción que no sea alimentar deberá reducir
         # los puntos de energía en 20 puntos y la felicidad perderá 30 puntos. Si el nivel de energía llega a cero,
         # el Tamagotchi muere y el atributo esta_vivo debe ser False.
-        pass
+        if self.n_energia <= 0:
+            self.vivo = False

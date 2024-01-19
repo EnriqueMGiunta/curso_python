@@ -15,15 +15,23 @@ class Tamagotchi():
         pg.theme = "Topanga"
         self.layout = [
             [pg.Text(f"MASCOTA \"{self.nombre}\"")],
-            [pg.ProgressBar(1, orientation='h', size=(20,10), key='Energia')],
-            [pg.ProgressBar(2, orientation='h', size=(20,10), key='Hambre')],
-            [pg.ProgressBar(3, orientation='h', size=(20,10), key='Humor')],
-            [pg.ProgressBar(4, orientation='h', size=(20,10), key='Felicidad')],
+            [pg.Text(f"Energía {self.n_energia}")],
+            [pg.ProgressBar(max_value=100, orientation='h', size=(20,10), key='Energia')],
+            [pg.Text(f"Hambre {self.n_hambre}")],
+            [pg.ProgressBar(max_value=100, orientation='h', size=(20,10), key='Hambre')],
+            [pg.Text(f"Humor {self.n_humor}")],
+            [pg.ProgressBar(max_value=100, orientation='h', size=(20,10), key='Humor')],
+            [pg.Text(f"Felicidad {self.n_felicidad}")],
+            [pg.ProgressBar(max_value=100, orientation='h', size=(20,10), key='Felicidad')],
             [pg.Button("Alimentar"), pg.Button("Jugar"), pg.Button("Dormir"), pg.Button("Hacer necesidades"), pg.Button("Salir")],
             [pg.Output(size=(40, 8))]
         ]
-        self.ventana = pg.Window("TAMAGOTCHI", self.layout)
+        self.ventana = pg.Window("TAMAGOTCHI", self.layout, finalize=True)
         self.boton = "."
+        # self.barra_energia = self.ventana['Energia']
+        # self.barra_hambre = self.ventana['Hambre']
+        # self.barra_humor = self.ventana['Humor']
+        # self.barra_felicidad = self.ventana['Felicidad']
 
     # METODOS        
     def mostrar_estado(self):
@@ -35,8 +43,11 @@ class Tamagotchi():
         print(f"Nivel de felicidad: {self.n_felicidad}%")
         print(f"Nivel de Humor:     {self.n_humor}%")
         print(f"Está vivo?:         {self.vivo}")
- #       progress_bar = self.ventana.FindElement('Energia')
- #       progress_bar.UpdateBar(self.n_energia, 100)
+        self.ventana['Energia'].update_bar(self.n_energia)
+        self.ventana['Hambre'].update_bar(self.n_hambre)
+        self.ventana['Felicidad'].update_bar(self.n_felicidad)
+        self.ventana['Humor'].update_bar(self.n_humor)
+
     def verificar_estado(self):
         # Además, implementa un método llamado verificar_estado que revise si el Tamagotchi está vivo.
         # Un Tamagotchi está vivo mientras su nivel de energía sea mayor que cero.
